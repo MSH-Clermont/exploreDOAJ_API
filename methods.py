@@ -34,13 +34,24 @@ def extract_id_Date_Title(resultatDuCallAPI, writer, fieldnames):
                 month = eachResult["bibjson"]["month"]
                 year = eachResult["bibjson"]["year"]
                 title = eachResult["bibjson"]["title"]
+                keywords=['mots clés manquants']
+                if "keywords" in eachResult["bibjson"]:
+                    keywords = eachResult["bibjson"]["keywords"]
+                affiliation = ""
+                for eachAuthor in eachResult["bibjson"]["author"]:
+                    if "affiliation" in eachAuthor:
+                        affiliation += eachAuthor["affiliation"] + " | "
+                id_article = eachResult["id"]
 
                 writer.writerow(
                     {fieldnames[0]: doi,
                      fieldnames[1]: month,
                      fieldnames[2]: year,
                      fieldnames[3]: title,
-                     fieldnames[4]: url
+                     fieldnames[4]: url,
+                     fieldnames[5]: keywords,
+                     fieldnames[6]: affiliation,
+                     fieldnames[7]: id_article
                      })
 
             if "next" in resultatDuCallAPI:
