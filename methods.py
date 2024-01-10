@@ -61,3 +61,23 @@ def extract_id_Date_Title(resultatDuCallAPI, writer, fieldnames):
             print("il n'y a aucun résultat")
     else:
         print("requete incorrecte")
+
+
+def extractKeywordsByYear(resultatDuCallAPI, writer, fieldnames):
+    if "results" in resultatDuCallAPI:
+        if resultatDuCallAPI['results']:
+            for eachResult in resultatDuCallAPI['results']:
+                if "keywords" in eachResult["bibjson"]:
+                    for eachKeyword in  eachResult["bibjson"]["keywords"]:
+                        writer.writerow({
+                        fieldnames[0]: eachKeyword,
+                        fieldnames[1]: eachResult["bibjson"]["year"]})
+
+    if "next" in resultatDuCallAPI:
+        nextResultat = call_API(resultatDuCallAPI["next"])
+        extractKeywordsByYear(nextResultat, writer, fieldnames)
+
+
+
+
+
